@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/more"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="gone" >
+
+    <TextView
+        android:id="@+id/more_tv" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="네모상자를 눌러 프로필사진을 변경해주세요"/>
+    
+    <ImageView
+        android:id="@+id/profile"
+        android:layout_below="@id/more_tv"
+        android:layout_centerInParent="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#ffff0000" />
+
+</RelativeLayout>
