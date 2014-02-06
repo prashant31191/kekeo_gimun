@@ -79,17 +79,6 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		/*
-		// Insert
-		RoomDbHelper mDbHelper = new RoomDbHelper(this);
-		SQLiteDatabase db = mDbHelper.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(RoomEntry.COLUMN_NAME_PROFILE_ID, R.drawable.profile);
-		values.put(RoomEntry.COLUMN_NAME_ROOM_NAME, "Test Room");
-		values.put(RoomEntry.COLUMN_NAME_ROOM_ID, 1);
-		long newId = db.insert(RoomEntry.TABLE_NAME, null, values);
-		*/
-		
 		// Select
 		mDbHelper = new RoomDbHelper(this);
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -106,6 +95,7 @@ public class MainActivity extends FragmentActivity {
 		
 		setContentView(R.layout.activity_main);
 		findViewById(R.id.random_button).setOnClickListener(new OnClickListener() {
+			
 			@Override
 			public void onClick(View v) {
 				int randomIndex = (int) Math.floor(Math.random() * (double) people.length);
@@ -157,6 +147,7 @@ public class MainActivity extends FragmentActivity {
 						mChat.setVisibility(View.VISIBLE);
 						mSearch.setVisibility(View.GONE);
 						mMore.setVisibility(View.GONE);
+						updateRoomCursor();
 					}
 				});
 		
