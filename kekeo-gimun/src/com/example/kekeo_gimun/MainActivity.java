@@ -12,6 +12,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -41,6 +42,7 @@ import com.example.kekeo_gimun.db.RoomContract.RoomEntry;
 import com.example.kekeo_gimun.db.RoomDbHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.games.multiplayer.realtime.RoomEntity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class MainActivity extends FragmentActivity {
@@ -89,7 +91,7 @@ public class MainActivity extends FragmentActivity {
 		*/
 		
 		// Select
-		RoomDbHelper mDbHelper = new RoomDbHelper(this);
+		mDbHelper = new RoomDbHelper(this);
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 		
 		Cursor c = db.query(
@@ -273,6 +275,7 @@ public class MainActivity extends FragmentActivity {
 	private SimpleCursorAdapter mCursorAdapter;
 	
 	private ArrayList<Integer> mProfilePics;
+	private RoomDbHelper mDbHelper;
 	
 	private static final String[] PROJECTION =
 		{
@@ -324,12 +327,34 @@ public class MainActivity extends FragmentActivity {
 				int count = cursor.getCount();
 				mProfilePics = new ArrayList<Integer>();
 				for (int i = 0; i < count; ++i){
-					int resId = Math.random() > 0.5 ? R.drawable.profile : R.drawable.profile2;
-						mProfilePics.add(resId);
+					int resId = R.drawable.profile;
+					double r = Math.random();
+					if (r < 0.1) {
+						resId = R.drawable.profile;
+					} else if (r < 0.2) {
+						resId = R.drawable.profile2;
+					} else if (r < 0.3) {
+						resId = R.drawable.profile3;
+					} else if (r < 0.4){
+						resId = R.drawable.profile4;
+					} else if (r < 0.5) {
+						resId = R.drawable.profile5;
+					} else if (r < 0.6) {
+						resId = R.drawable.profile6;
+					} else if (r < 0.7) {
+						resId = R.drawable.profile7;
+					} else if (r < 0.8) {
+						resId = R.drawable.profile8;
+					} else if (r < 0.9) {
+						resId = R.drawable.profile9;
+					} else {
+						resId = R.drawable.profile10;
+					}
+					mProfilePics.add(resId);
 				}
 				mCursorAdapter.swapCursor(cursor);
 			}
-
+			
 			@Override
 			public void onLoaderReset(Loader<Cursor> arg0) {
 				mCursorAdapter.swapCursor(null);
@@ -382,17 +407,34 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void bindView(View view, Context arg1, Cursor cursor) {
 			super.bindView(view, arg1, cursor);
-			ImageView image = (ImageView) view.findViewById(R.id.pic);
-			int imageId = cursor.getInt(cursor.getColumnIndex(RoomEntry.COLUMN_NAME_PROFILE_ID));
-			image.setImageResource(imageId);
+			final int id = cursor.getInt(cursor.getColumnIndex(RoomEntry._ID));
 			view.findViewById(R.id.close).setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(MainActivity.this, "close clicked", Toast.LENGTH_SHORT).show();
+					SQLiteDatabase db = mDbHelper.getWritableDatabase();
+					db.delete(RoomEntry.TABLE_NAME, RoomEntry._ID + " = ?", new String[] {
+							String.valueOf(id)
+					});
+					updateRoomCursor();
 				}
 			});
 		}
+	}
+	
+	private void updateRoomCursor() {
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		
+		Cursor c = db.query(
+				RoomEntry.TABLE_NAME,	// The table to query
+				null,					// The columns to return
+				null,                   // The columns for the WHERE clause
+				null,                   // The values for the WHERE clause
+				null,                   // don't group the rows
+				null,                   // don't filter by row groups
+				null                    // The sort order
+				);
+		mRoomCursorAdapter.swapCursor(c);
 	}
 
 	@Override

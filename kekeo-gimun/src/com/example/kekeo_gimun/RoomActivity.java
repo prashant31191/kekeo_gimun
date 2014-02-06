@@ -115,7 +115,7 @@ public class RoomActivity extends Activity {
 		
 		getMessage();
 	}
-		
+	
 		public void getMessage() {
 				new AsyncTask() {
 			
@@ -135,14 +135,6 @@ public class RoomActivity extends Activity {
 									String[] details = token.split("\\\\");
 									addMessageItem(details[0], details[1], null);
 								}
-								
-								mScrollView.post(new Runnable() {
-									
-									@Override
-									public void run() {
-										mScrollView.fullScroll(ScrollView.FOCUS_DOWN);										
-									}
-								});
 							}
 						});
 						return null;
@@ -194,10 +186,9 @@ public class RoomActivity extends Activity {
 					
 					@Override
 					protected Object doInBackground(Object... arg0) {
-						RestClient.sendMessages(486, message, mRoomId);
+						RestClient.sendMessages(3, message, mRoomId);
 						return null;
 					}
-				
 				}.execute();
 				text.setText("");
 				mScrollView.post(new Runnable() {
@@ -249,6 +240,14 @@ public class RoomActivity extends Activity {
 		
 		LinearLayout messages = (LinearLayout) findViewById(R.id.messages);
 		messages.addView(item);
+		
+		mScrollView.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				mScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+			}
+		});
 	}
 
 	static final int REQUEST_IMAGE_CAPTURE = 1;
