@@ -36,31 +36,31 @@ public class GcmIntentService extends IntentService {
         if (!extras.isEmpty()) {
             if (GoogleCloudMessaging.
                     MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+                sendNotification("Send error: " + extras.toString(), 1);
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_DELETED.equals(messageType)) {
                 sendNotification("Deleted messages on server: " +
-                        extras.toString());
+                        extras.toString(), 1);
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
             	if (roomActivity != null) {
             		roomActivity.getMessage();
             	}
             	// Post notification of received message.
-                sendNotification(extras.getString("content"));
+                sendNotification(extras.getString("content"), extras.getInt("room_id"));
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    private void sendNotification(String msg) {
+    private void sendNotification(String msg, int roomId) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
         
         Intent intent = new Intent(this, RoomActivity.class);
         intent.putExtra("name", MainActivity.names[0]);
-        intent.putExtra("room_id", 1);
+        intent.putExtra("room_id", roomId);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 		intent, PendingIntent.FLAG_CANCEL_CURRENT);
