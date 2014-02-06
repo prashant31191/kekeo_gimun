@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
     android:layout_height="60dp">
     <ImageView
@@ -29,6 +30,8 @@
    	    android:background="#ffffff00" />
    	<ImageButton 
    	    android:id="@+id/close"
+   	    android:focusable="false"
+   	    android:focusableInTouchMode="false"
    	    android:layout_width="30dp"
    	    android:layout_height="30dp"
    	    android:src="@drawable/close_small" />

@@ -17,6 +17,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.text.TextUtilsCompat;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -127,6 +129,9 @@ public class RoomActivity extends Activity {
 							
 							@Override
 							public void run() {
+								if (TextUtils.isEmpty(result)) {
+									return ;
+								}
 								String[] tokens = result.split(",");
 								LinearLayout messages = (LinearLayout) findViewById(R.id.messages);
 								messages.removeAllViews();
