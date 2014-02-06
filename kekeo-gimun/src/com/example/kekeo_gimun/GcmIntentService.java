@@ -47,7 +47,7 @@ public class GcmIntentService extends IntentService {
             		roomActivity.getMessage();
             	}
             	// Post notification of received message.
-                sendNotification(extras.getString("content"), extras.getInt("room_id"));
+                sendNotification(extras.getString("content"), Integer.valueOf(extras.getString("room_id")));
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }

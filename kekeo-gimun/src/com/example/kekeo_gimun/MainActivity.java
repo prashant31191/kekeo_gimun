@@ -550,5 +550,4 @@ public class MainActivity extends FragmentActivity {
 	    editor.putInt(PROPERTY_APP_VERSION, appVersion);
 	    editor.commit();
 	}
-
 }
